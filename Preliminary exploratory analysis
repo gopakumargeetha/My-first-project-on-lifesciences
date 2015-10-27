@@ -1,0 +1,64 @@
+Plot **density plot** to vishualize the data distributions. In this context, it is used to find the outlier samples. 
+```{r}
+
+plot ( density ( LGGmat[,1], na.rm=TRUE ), xlim = c(0,16), ylim = c(0,0.35), 
+       main = "Density plot", xlab = "Intensity" )
+for(i in 2: ncol ( LGGmat ) ) {  
+    points ( density ( LGGmat[,i], na.rm = TRUE ), type = "l", col = rainbow(20)[i] ) 
+}
+```
+
+In addition, we also do check the normalization of the data 
+
+```{r}
+biocLite("vsn")
+library("vsn")
+meanSdPlot(LGGmat)
+```
+
+The meanSdPlot shows some dependence between mean and standard deviation. The median is shown in red lines. 
+
+I still went ahead considering that the data is fine for the time being. 
+
+In addition, we also check the boxplot, general scatter plot, MA plot, vulcano plot and heatmap of the expression data. If we make the plots with all the data
+it will not be easily understandable. Therefore, we do some filtering using 
+rowmeans for each gene
+
+```{r}
+meanThresh <- log2(50)
+filt1 <- rowMeans(LGGmat[, group == 0]) > meanThresh
+filt2 <- rowMeans(LGGmat[, group == 1])> meanThresh
+selProbes <- (filt1 | filt2)
+LGGmatfilt <- LGGmat[selProbes, ]
+dim(LGGmatfilt)
+rowMeans(LGGmatfilt)[1:10]
+``` 
+
+scatter plot
+
+```{r}
+plot(LGGmatfilt,col=densCols(LGGmatfilt),pch=16,cex=.4)
+```
+
+boxplot
+
+```{r}
+boxplot(LGGmatfilt)
+```
+MA Plot
+
+```{r}
+x<-LGGmatfilt[,1]
+y<-LGGmatfilt[,3]
+plot(x,y,main=paste0("corr=",signif(cor(x,y))))
+plot((x+y)/2,y-x,main=paste0("corr=",signif(cor(x,y))))
+
+#Let us do this using log transformed values
+
+x<-log2(LGGmatfilt[,1])
+y<-log2(LGGmatfilt[,3])
+plot(x,y,main=paste0("corr=",signif(cor(x,y))))
+plot((x+y)/2,y-x,main=paste0("corr=",signif(cor(x,y))))
+
+```
+Seems like there is one sample in the group =0 has an outlier. For the time being, I am keeping the calculations taking all samples (66). 
