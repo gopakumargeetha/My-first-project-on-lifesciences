@@ -1,0 +1,124 @@
+From these two files, selected the patients into two groups.
+
+
+1. group 0 (patients who are likely to become high grade brain cancer)
+2. group 1 (patients who are likely to be remained with low grade brain cancer)
+
+
+Out of 36(group 0) and 36(group 1) patients as given in brain_LGG_subset file, expression data was available only for 34(group 0) and 32(group 1) patients. Few patient data was missing.  
+
+**Missing data :**
+
+(1)	TCGA.DU.5872.02.RNAseq (group 0)
+(2)	TCGA.DU.7304.02.RNAseq (group 0)
+(3)	TCGA.FG.5965.02.RNAseq (group 1)
+(4)	TCGA.DU.6404.02.RNAseq (group 1)
+(5)	TCGA.DU.6407.02.RNAseq (group 1)
+(6)	TCGA.DU.5870.02.RNAseq (group 1)
+
+
+```{r}
+lgg <- read.csv("~/Google Drive/0-official/Projects/lgg/expression_data_LGG.csv")
+new_expression_group0 <- lgg[, which(colnames(lgg) %in% c("NAME",
+                                                        "TCGA.CS.4941.01.RNAseq",
+                                                        "TCGA.DU.5852.01.RNAseq",
+                                                        "TCGA.DU.7292.01.RNAseq",
+                                                        "TCGA.HT.7469.01.RNAseq",
+                                                        "TCGA.DU.6402.01.RNAseq",
+                                                        "TCGA.DU.6396.01.RNAseq",
+                                                        "TCGA.DU.8161.01.RNAseq",
+                                                        "TCGA.HT.8564.01.RNAseq",
+                                                        "TCGA.IK.7675.01.RNAseq",
+                                                        "TCGA.HT.8012.01.RNAseq",
+                                                        "TCGA.E1.5303.01.RNAseq",
+                                                        "TCGA.S9.A6UA.01.RNAseq",
+                                                        "TCGA.DU.7013.01.RNAseq",
+                                                        "TCGA.CS.6186.01.RNAseq",
+                                                        "TCGA.DU.8166.01.RNAseq",
+                                                        "TCGA.DU.7010.01.RNAseq",
+                                                        "TCGA.DU.7298.01.RNAseq",
+                                                        "TCGA.DU.5854.01.RNAseq",
+                                                        "TCGA.DU.A5TP.01.RNAseq",
+                                                        "TCGA.DU.A76K.01.RNAseq",
+                                                        "TCGA.FG.6689.01.RNAseq",
+                                                        "TCGA.S9.A6WL.01.RNAseq",
+                                                        "TCGA.FG.7643.01.RNAseq",
+                                                        "TCGA.DH.A669.01.RNAseq",
+                                                        "TCGA.DH.A669.02.RNAseq",
+                                                        "TCGA.DU.5872.01.RNAseq",
+                                                        "TCGA.DU.5872.02.RNAseq",
+                                                        "TCGA.HT.8011.01.RNAseq",
+                                                        "TCGA.HT.7620.01.RNAseq",
+                                                        "TCGA.FG.A6J3.01.RNAseq",
+                                                        "TCGA.CS.5395.01.RNAseq",
+                                                        "TCGA.DU.7304.01.RNAseq",
+                                                        "TCGA.DU.7304.02.RNAseq",
+                                                        "TCGA.DU.7300.01.RNAseq",
+                                                        "TCGA.DU.7008.01.RNAseq",
+                                                        "TCGA.DU.A76R.01.RNAseq"))]
+new_expression_group1 <- lgg[, which(colnames(lgg) %in% c(                                                       
+                                                        "TCGA.E1.5319.01.RNAseq",
+                                                        "TCGA.TM.A7CF.01.RNAseq",
+                                                        "TCGA.TM.A7CF.02.RNAseq",
+                                                        "TCGA.DU.6392.01.RNAseq",
+                                                        "TCGA.S9.A7R3.01.RNAseq",
+                                                        "TCGA.FG.5965.01.RNAseq",
+                                                        "TCGA.FG.5965.02.RNAseq",
+                                                        "TCGA.E1.5322.01.RNAseq",
+                                                        "TCGA.HT.7854.01.RNAseq",
+                                                        "TCGA.DU.6404.01.RNAseq",
+                                                        "TCGA.DU.6404.02.RNAseq",
+                                                        "TCGA.DB.5277.01.RNAseq",
+                                                        "TCGA.CS.4942.01.RNAseq",
+                                                        "TCGA.DU.6395.01.RNAseq",
+                                                        "TCGA.HT.7610.01.RNAseq",
+                                                        "TCGA.E1.5302.01.RNAseq",
+                                                        "TCGA.DU.7306.01.RNAseq",
+                                                        "TCGA.HT.8013.01.RNAseq",
+                                                        "TCGA.TM.A7C3.01.RNAseq",
+                                                        "TCGA.S9.A6TS.01.RNAseq",
+                                                        "TCGA.DU.7302.01.RNAseq",
+                                                        "TCGA.E1.5307.01.RNAseq",
+                                                        "TCGA.S9.A6TU.01.RNAseq",
+                                                        "TCGA.E1.5305.01.RNAseq",
+                                                        "TCGA.DU.6399.01.RNAseq",
+                                                        "TCGA.DU.6401.01.RNAseq",
+                                                        "TCGA.HT.7480.01.RNAseq",
+                                                        "TCGA.DU.6408.01.RNAseq",
+                                                        "TCGA.DU.6407.01.RNAseq",
+                                                        "TCGA.DU.6407.02.RNAseq",
+                                                        "TCGA.E1.5311.01.RNAseq",
+                                                        "TCGA.DU.7009.01.RNAseq",
+                                                        "TCGA.DU.A7T8.01.RNAseq",
+                                                        "TCGA.DU.7014.01.RNAseq",
+                                                        "TCGA.DU.5870.01.RNAseq",
+                                                        "TCGA.DU.5870.02.RNAseq"))]
+patient_list <- cbind(new_expression_group0,new_expression_group1)
+names(patient_list)[1] <- "Gene"
+rownames(patient_list) = make.names(patient_list$Gene, unique=TRUE)
+
+```
+Now we need to remove the additional column of Gene and write the selected
+subset of patients gene expression data to a new file patient_list.csv
+Further the sampleinfo.LGG.csv file is written with patient id and the corresponding group.
+
+```{r}
+patient_list$Gene<-NULL
+
+write.csv(patient_list,file = "patient_list.csv")
+sampleinfo <- read.csv("~/Google Drive/0-official/Projects/lgg/sampleinfo.LGG.csv")
+
+```
+1. 34 columns - group0
+2. 32 columns - group1
+
+Now we use  bioconductor software package to filter
+genes which have biological impact and are also statistically reliable.
+
+```{r}
+source("http://bioconductor.org/biocLite.R")
+LGGmat<-as.matrix(sapply(patient_list, as.numeric))
+group<-factor(sampleinfo$group)
+row.names(LGGmat) <- rownames(patient_list)
+
+```
